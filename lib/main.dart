@@ -1,9 +1,10 @@
-// Flutter imports:
+
+
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Sweets'),
+      home: const MyHomePage(title: 'hw_4'),
     );
   }
 }
@@ -36,47 +37,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final List<String> nav = ['Галерея', 'Мои фото'];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return DefaultTabController(
+      length: nav.length,
+      child: Scaffold(
+        appBar: AppBar(
         title: Text(widget.title),
+        bottom: TabBar(
+          tabs: nav.map((String tab) => Tab(text: tab)).toList()
+          ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // Image.asset('assets/images/image.jpg')
-            // Image.network('https://storge.pic2.me/c/1360x800/639/55510c2d0710e.jpg')
-            // SvgPicture.asset('assets/icons/coffee-svgrepo-com.svg')
-            CarouselSlider(
-              options: CarouselOptions(height: 400.0),
-              items: [
-                'assets/icons/muffin-svgrepo-com.svg',
-                'assets/icons/ice-cream-svgrepo-com.svg',
-                'assets/icons/coffee-svgrepo-com.svg',
-                'assets/icons/doughnut-svgrepo-com.svg',
-                'assets/icons/sweats-svgrepo-com.svg'
-                ].map((icon) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: const BoxDecoration(
-                      // color: Colors.amber
-                      ),
-              child: SvgPicture.asset(
-                icon
-                )
-            );
-      },
-    );
-  }).toList(),)
-            
-          ],
-        ),
-      ),
+      body: TabBarView(
+        children: nav.map((name) {
+          return ListView(
+            key: PageStorageKey(name),
+            children: <Widget>[
+              for (int i = 23; i < 50; i++) Image.network('https://picsum.photos/id/$i/500/500'),
+            ],
+          );
+        }).toList(),
+        )
+    ),
     );
   }
 }
