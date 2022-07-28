@@ -1,11 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-
-// Package imports:
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -37,31 +30,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final List<String> nav = ['Галерея', 'Мои фото'];
+  List<String> numList = List<String>.generate(200, (i) => 'Item $i');
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: nav.length,
       child: Scaffold(
-        appBar: AppBar(
-        title: Text(widget.title),
-        bottom: TabBar(
-          tabs: nav.map((String tab) => Tab(text: tab)).toList()
+          appBar: AppBar(
+            title: Text(widget.title),
+            bottom:
+                TabBar(tabs: nav.map((String tab) => Tab(text: tab)).toList()),
           ),
-      ),
-      body: TabBarView(
-        children: nav.map((name) {
-          return ListView(
-            key: PageStorageKey(name),
-            children: <Widget>[
-              for (int i = 23; i < 50; i++) Image.network('https://picsum.photos/id/$i/500/500'),
-            ],
-          );
-        }).toList(),
-        )
-    ),
+          body: TabBarView(
+            children: nav.map((name) {
+              return ListView.builder(
+                key: PageStorageKey(name),
+                itemCount: numList.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 2),
+                    height: 400,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 144, 143, 141),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          'https://picsum.photos/id/$index/500/500',
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          )),
     );
   }
 }
