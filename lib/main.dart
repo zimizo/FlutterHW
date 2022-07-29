@@ -29,43 +29,83 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+final ButtonStyle buttonStyle = TextButton.styleFrom(
+  backgroundColor: const Color.fromARGB(221, 144, 141, 141),
+);
+
 class _MyHomePageState extends State<MyHomePage> {
   final List<String> nav = ['Галерея', 'Мои фото'];
   List<String> numList = List<String>.generate(200, (i) => 'Item $i');
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: nav.length,
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-            bottom:
-                TabBar(tabs: nav.map((String tab) => Tab(text: tab)).toList()),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home work 5'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.person),
           ),
-          body: TabBarView(
-            children: nav.map((name) {
-              return ListView.builder(
-                key: PageStorageKey(name),
-                itemCount: numList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 2),
-                    height: 400,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 144, 143, 141),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          'https://picsum.photos/id/$index/500/500',
-                        ),
-                      ),
+        ],
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: const CircleAvatar(
+                radius: 70,
+                backgroundImage: NetworkImage('https://picsum.photos/300/300'),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text('Home'),
+                    leading: Icon(Icons.home),
+                    trailing: Icon(Icons.arrow_forward),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text('Profile'),
+                    leading: Icon(Icons.person),
+                    trailing: Icon(Icons.arrow_forward),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    title: Text('Images'),
+                    leading: Icon(Icons.image),
+                    trailing: Icon(Icons.arrow_forward),
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      child: Text('Выход'),
+                      style: buttonStyle,
+                      onPressed: () {},
                     ),
-                  );
-                },
-              );
-            }).toList(),
-          )),
+                    ElevatedButton(
+                      child: Text('Регистрация'),
+                      style: buttonStyle,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
