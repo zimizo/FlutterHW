@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'hw_5'),
+      home: const MyHomePage(title: 'hw_5'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -39,15 +39,16 @@ class TabItem {
 }
 
 final List<TabItem> _tabBar = [
-  TabItem('Home', Icon(Icons.home)),
-  TabItem('Chat', Icon(Icons.message)),
-  TabItem('Albums', Icon(Icons.album)),
+  TabItem('Home', const Icon(Icons.home)),
+  TabItem('Chat', const Icon(Icons.message)),
+  TabItem('Albums', const Icon(Icons.album)),
 ];
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   final List<String> nav = ['Галерея', 'Мои фото'];
   List<String> numList = List<String>.generate(200, (i) => 'Item $i');
-  TabController? _tabController;
+  late TabController _tabController;
   bool _showBottomSheet = false;
   int _currentTabIndex = 0;
 
@@ -56,14 +57,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: _tabBar.length, vsync: this);
     _showBottomSheet = false;
-    _tabController?.addListener(() {
-      print('object');
+    _tabController.addListener(() {
       setState(() {
-        if(_tabController != null) {
-          _currentTabIndex = _tabController!.index;
-        }
+        _currentTabIndex = _tabController.index;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -92,49 +96,46 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
             ),
             Expanded(
-
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text('Home'),
-                    leading: Icon(Icons.home),
-                    trailing: Icon(Icons.arrow_forward),
+                    title: const Text('Home'),
+                    leading: const Icon(Icons.home),
+                    trailing: const Icon(Icons.arrow_forward),
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text('Profile'),
-                    leading: Icon(Icons.person),
-                    trailing: Icon(Icons.arrow_forward),
+                    title: const Text('Profile'),
+                    leading: const Icon(Icons.person),
+                    trailing: const Icon(Icons.arrow_forward),
                     onTap: () {},
                   ),
                   ListTile(
-                    title: Text('Images'),
-                    leading: Icon(Icons.image),
-                    trailing: Icon(Icons.arrow_forward),
+                    title: const Text('Images'),
+                    leading: const Icon(Icons.image),
+                    trailing: const Icon(Icons.arrow_forward),
                     onTap: () {},
                   ),
                 ],
               ),
             ),
-            Container(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: buttonStyle,
-                      onPressed: () {},
-                      child: const Text('Выход'),
-                    ),
-                    ElevatedButton(
-                      style: buttonStyle,
-                      onPressed: () {},
-                      child: const Text('Регистрация'),
-                    ),
-                  ],
-                ),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: buttonStyle,
+                    onPressed: () {},
+                    child: const Text('Выход'),
+                  ),
+                  ElevatedButton(
+                    style: buttonStyle,
+                    onPressed: () {},
+                    child: const Text('Регистрация'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -169,29 +170,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
       bottomNavigationBar: BottomAppBar(
         clipBehavior: Clip.antiAlias,
-        child: Container(
-          child: BottomNavigationBar(
-            elevation: 0,
-            items: [
-              for (final item in _tabBar)
-                BottomNavigationBarItem(
-                  icon: item.icon,
-                  label: item.title
-                )
-            ],
-            currentIndex: _currentTabIndex,
-            onTap: (index){
-              setState(() {
-                _tabController?.index = index;
-                _currentTabIndex = index;
-              });
-            },
-          ),
+        child: BottomNavigationBar(
+          elevation: 0,
+          items: [
+            for (final item in _tabBar)
+              BottomNavigationBarItem(icon: item.icon, label: item.title)
+          ],
+          currentIndex: _currentTabIndex,
+          onTap: (index) {
+            setState(() {
+              _tabController.index = index;
+              _currentTabIndex = index;
+            });
+          },
         ),
       ),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             if (!_showBottomSheet) {
               Scaffold.of(context).showBottomSheet<void>(
@@ -205,9 +201,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           ListTile(
-                            title: Text('Images'),
-                            leading: Icon(Icons.image),
-                            trailing: Text('200 руб'),
+                            title: const Text('Images'),
+                            leading: const Icon(Icons.image),
+                            trailing: const Text('200 руб'),
                             onTap: () {},
                           ),
                           ElevatedButton(
