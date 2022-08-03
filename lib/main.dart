@@ -46,17 +46,17 @@ final List<TabItem> _tabBar = [
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  int _currentTabIndex = 0;
+
   final List<String> nav = ['Галерея', 'Мои фото'];
   List<String> numList = List<String>.generate(200, (i) => 'Item $i');
-  late TabController _tabController;
-  bool _showBottomSheet = false;
-  int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: _tabBar.length, vsync: this);
-    _showBottomSheet = false;
     _tabController.addListener(() {
       setState(() {
         _currentTabIndex = _tabController.index;
@@ -189,40 +189,39 @@ class _MyHomePageState extends State<MyHomePage>
         builder: (context) => FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            if (!_showBottomSheet) {
-              Scaffold.of(context).showBottomSheet<void>(
-                (BuildContext context) {
-                  return Container(
-                    height: 200,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          ListTile(
-                            title: const Text('Images'),
-                            leading: const Icon(Icons.image),
-                            trailing: const Text('200 руб'),
-                            onTap: () {},
-                          ),
-                          ElevatedButton(
-                              child: const Text('Confirm'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                _showBottomSheet = false;
-                              })
-                        ],
-                      ),
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  height: 200,
+                  color: Colors.white,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ListTile(
+                              title: const Text('Images'),
+                              leading: const Icon(Icons.image),
+                              trailing: const Text('200 руб'),
+                              onTap: () {},
+                            ),
+                            ElevatedButton(
+                                child: const Text('Confirm'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                })
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                },
-              );
-              _showBottomSheet = true;
-            } else {
-              Navigator.pop(context);
-              _showBottomSheet = false;
-            }
+                  ),
+                );
+              },
+            );
           },
         ),
       ),
