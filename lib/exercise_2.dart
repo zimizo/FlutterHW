@@ -28,6 +28,8 @@ class _ExerciseTwoState extends State<ExerciseTwo>
               background: Image.network(
                 'https://picsum.photos/200',
                 fit: BoxFit.cover,
+                color: const Color.fromARGB(123, 3, 3, 3),
+                colorBlendMode: BlendMode.multiply,
               ),
             ),
           ),
