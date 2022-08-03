@@ -7,9 +7,9 @@ class ExerciseOne extends StatefulWidget {
   State<ExerciseOne> createState() => _ExerciseOneState();
 }
 
-class listItem {
+class ListItem {
   String title;
-  listItem(this.title);
+  ListItem(this.title);
 }
 
 class _ExerciseOneState extends State<ExerciseOne>
