@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ExerciseFour extends StatefulWidget {
+class ExerciseFour extends StatelessWidget {
   const ExerciseFour({Key? key}) : super(key: key);
-
-  @override
-  State<ExerciseFour> createState() => _ExerciseFourState();
-}
-
-class _ExerciseFourState extends State<ExerciseFour>
-    with TickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
