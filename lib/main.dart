@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_home_work/exercise_1.dart';
-import 'package:flutter_home_work/exercise_2.dart';
-import 'package:flutter_home_work/exercise_3.dart';
-import 'package:flutter_home_work/exercise_4.dart';
+
+import 'package:flutter_home_work/module_7/home_work.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,11 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const ExerciseOne(),
-      // home: const ExerciseTwo(),
-      // home: const ExerciseThree(),
-      home: const ExerciseFour(),
+      home: const HomeWorkSeven(),
     );
   }
 }
-
