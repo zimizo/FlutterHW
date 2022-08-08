@@ -31,32 +31,39 @@ class _ArtistsState extends State<Artists> {
   late List artists;
 
   @override
-  void initState() {
-    super.initState();
-    artists = getArtistList();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       drawer: const NavDrawer(),
-      body: ListView.builder(
-        itemCount: artists.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(artists[index]),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ArtistsDetails(artists[index])));
-            },
-            shape: const Border(
-              bottom: BorderSide(
-                width: 1,
-                color: Color.fromARGB(115, 138, 135, 135),
-              ),
-            ),
-          );
+      body: FutureBuilder(
+        future: getArtistList(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const CircularProgressIndicator();
+            case ConnectionState.done:
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(snapshot.data[index]['name']),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ArtistsDetails(link: snapshot.data[index]['link'].toString())));
+                    },
+                    shape: const Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Color.fromARGB(115, 138, 135, 135),
+                      ),
+                    ),
+                  );
+                },
+              );
+            default:
+              return const CircularProgressIndicator();
+          }
         },
       ),
     );
@@ -64,8 +71,8 @@ class _ArtistsState extends State<Artists> {
 }
 
 class ArtistsDetails extends StatefulWidget {
-  const ArtistsDetails(String link, {Key? key}) : super(key: key);
-
+  const ArtistsDetails({Key? key, required this.link}) : super(key: key);
+  final String link;
   @override
   State<ArtistsDetails> createState() => _ArtistsDetailsState();
 }
@@ -73,8 +80,37 @@ class ArtistsDetails extends StatefulWidget {
 class _ArtistsDetailsState extends State<ArtistsDetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
+    return FutureBuilder(
+      future: getArtistByLink(widget.link),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const CircularProgressIndicator();
+          case ConnectionState.done:
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  snapshot.data.name,
+                ),
+              ),
+              body: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      snapshot.data.about,
+                      style: const TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          default:
+            return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

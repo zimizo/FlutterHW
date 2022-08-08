@@ -1,33 +1,52 @@
 import 'package:flutter/services.dart';
 import 'dart:convert';
+import 'dart:async';
 
-Future<String> fetchFileFromAssets(String assetsPath) {
+Future<String> fetchFileFromAssets(String assetsPath) async {
   return rootBundle.loadString(assetsPath).then((file) => file);
 }
 
-List getArtistList() {
-  final response = fetchFileFromAssets('assets/sources/artists.json')
+
+Future<List<Map<String, dynamic>>> getArtistList() async {
+  final response = await fetchFileFromAssets('assets/sources/artists.json')
       .then((responce) => responce);
   final data = json.decode(response.toString());
-  return List.generate(data.length, (index) => data[index]['link']);
+
+  final completer = Completer<List<Map<String, dynamic>>>();
+
+  completer.complete(List.generate(
+      data.length,
+      (index) => {
+            'link': data[index]['link'],
+            'name': data[index]['name'],
+          }));
+
+  return completer.future;
 }
 
 class Artist {
-  final name;
-  final link;
-  final about;
+  final String name;
+  final String link;
+  final String about;
 
   Artist(this.name, this.link, this.about);
 }
 
-Artist getArtistByLink(String link) {
-  final response = fetchFileFromAssets('assets/sources/artists.json')
-      .then((responce) => responce) ;
+Future<Artist> getArtistByLink(String link) async {
+  final response = await fetchFileFromAssets('assets/sources/artists.json')
+      .then((responce) => responce);
   final data = json.decode(response.toString());
+
+  final completer = Completer<Artist>();
+
   for (final artist in data) {
     if (artist['link'] == link) {
-      return Artist(artist['name'], artist['link'], artist['about']);
+      completer
+          .complete(Artist(artist['name'], artist['link'], artist['about']));
+      return completer.future;
     }
   }
-  return Artist('Not found', 'Not found', 'Not found');
+
+  completer.complete(Artist('Not found', 'Not found', 'Not found'));
+  return completer.future;
 }
