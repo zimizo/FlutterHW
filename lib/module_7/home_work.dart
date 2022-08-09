@@ -78,10 +78,16 @@ class ArtistsDetails extends StatefulWidget {
 }
 
 class _ArtistsDetailsState extends State<ArtistsDetails> {
+  late Future<Map<String, dynamic>> data;
+  @override
+  void initState() {
+    data = getArtistByLink(widget.link);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getArtistByLink(widget.link),
+      future: data,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -90,7 +96,7 @@ class _ArtistsDetailsState extends State<ArtistsDetails> {
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  snapshot.data.name,
+                  snapshot.data['name'],
                 ),
               ),
               body: ListView(
@@ -98,7 +104,7 @@ class _ArtistsDetailsState extends State<ArtistsDetails> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      snapshot.data.about,
+                      snapshot.data['about'],
                       style: const TextStyle(
                         fontSize: 22,
                       ),
