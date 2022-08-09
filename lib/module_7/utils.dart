@@ -23,14 +23,6 @@ Future<List<Map<String, dynamic>>> getArtistList() async {
   return completer.future;
 }
 
-class Artist {
-  final String name;
-  final String link;
-  final String about;
-
-  Artist(this.name, this.link, this.about);
-}
-
 Future<Map<String, dynamic>> getArtistByLink(String link) async {
   final response = await fetchFileFromAssets('assets/sources/artists.json')
       .then((responce) => responce);
