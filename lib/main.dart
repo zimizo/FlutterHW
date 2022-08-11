@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_home_work/module_7/home_work.dart';
+import 'package:flutter_home_work/module_8/home_work.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeWorkSeven(),
+      home: SearchFile(),
     );
   }
 }
