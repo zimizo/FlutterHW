@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_work/module_7/utils.dart';
 
 class HomeWorkSeven extends StatefulWidget {
+  static const routeName = '/';
   const HomeWorkSeven({Key? key}) : super(key: key);
   @override
   State<HomeWorkSeven> createState() => _HomeWorkSevenState();
@@ -21,6 +22,7 @@ class _HomeWorkSevenState extends State<HomeWorkSeven> {
 }
 
 class Artists extends StatefulWidget {
+  static const routeName = '/artists';
   const Artists({Key? key}) : super(key: key);
 
   @override
@@ -48,9 +50,7 @@ class _ArtistsState extends State<Artists> {
                   return ListTile(
                     title: Text(snapshot.data[index]['name']),
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              ArtistsDetails(link: snapshot.data[index]['link'].toString())));
+                      Navigator.of(context).pushNamed('/artists_details', arguments: {'link': snapshot.data[index]['link']});
                     },
                     shape: const Border(
                       bottom: BorderSide(
@@ -71,6 +71,7 @@ class _ArtistsState extends State<Artists> {
 }
 
 class ArtistsDetails extends StatefulWidget {
+  static const routeName = '/artists_details';
   const ArtistsDetails({Key? key, required this.link}) : super(key: key);
   final String link;
   @override
@@ -84,6 +85,7 @@ class _ArtistsDetailsState extends State<ArtistsDetails> {
     data = getArtistByLink(widget.link);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -121,6 +123,19 @@ class _ArtistsDetailsState extends State<ArtistsDetails> {
   }
 }
 
+class NotFound extends StatelessWidget {
+  const NotFound({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Страница не найдена!'),
+      ),
+    );
+  }
+}
+
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
 
@@ -134,8 +149,7 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const HomeWorkSeven()));
+             Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
             },
           ),
           ListTile(
@@ -143,8 +157,7 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.star),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const Artists()));
+              Navigator.of(context).pushNamedAndRemoveUntil('/artists', (route) => false);
             },
           ),
         ],
