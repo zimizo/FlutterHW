@@ -1,0 +1,3 @@
+text from File.txt
+
+lskdfldf

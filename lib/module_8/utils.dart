@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
 Future<String> fetchFileFromAssets(String assetsPath) async {
-  return rootBundle.loadString(assetsPath).then((file) => file);
-}
-
-
-void main(List<String> args) {
-  
+  try {
+    return await rootBundle.loadString(assetsPath).then((file) => file);
+  } 
+  on FlutterError{
+    return 'File not found!';
+  }
+  catch (e) {
+    return("Error: $e");
+  }
 }
