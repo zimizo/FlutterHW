@@ -28,6 +28,10 @@ dev_dependencies:
     sdk: flutter
   import_sorter: ^4.6.0
 
+  json_serializable: ^6.3.1
+
+  build_runner: ^2.2.0
+
   flutter_lints: ^2.0.0
 
 flutter:
