@@ -11,6 +11,10 @@ class HotelListPage extends StatefulWidget {
 class _HotelListPageState extends State<HotelListPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Hotel List'),
+      ),
+    );
   }
 }
