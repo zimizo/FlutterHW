@@ -12,31 +12,21 @@ class SearchFile extends StatefulWidget {
 
 class _SearchFileState extends State<SearchFile> {
   final textFieldController = TextEditingController();
-  final StreamController _readFileStreamController = StreamController<String>();
-  late StreamSubscription subscription;
-  String textFromFile = '';
 
-  @override
-  void initState() {
-    subscription = _readFileStreamController.stream.listen(
-      (fileName) async {
-        if (!fileName.endsWith('.txt')) {
-          fileName += '.txt';
-        }
-        String text = (await fetchFileFromAssets('assets/text_files/$fileName'))
-            .toString();
-        setState(() {
-          textFromFile = text;
-        });
-      },
-    );
-    super.initState();
+  Future<String>? textFromFile;
+
+  void readFile(String fileName) {
+    if (!fileName.endsWith('.txt')) {
+      fileName += '.txt';
+    }
+    setState(() {
+      textFromFile = fetchFileFromAssets('assets/text_files/$fileName');
+    });
   }
 
   @override
   void dispose() {
     textFieldController.dispose();
-    subscription.cancel();
     super.dispose();
   }
 
@@ -48,9 +38,7 @@ class _SearchFileState extends State<SearchFile> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(
-            15
-          ),
+          padding: const EdgeInsets.all(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -61,10 +49,7 @@ class _SearchFileState extends State<SearchFile> {
                   decoration: InputDecoration(
                     suffixIcon: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _readFileStreamController
-                              .add(textFieldController.text);
-                        });
+                        readFile(textFieldController.text);
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -116,16 +101,34 @@ class _SearchFileState extends State<SearchFile> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top:8.0),
-                child: Text(
-                  textFromFile,
-                  key: const Key('textKey'),
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              )
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: FutureBuilder(
+                    key: const Key('lioadFile'),
+                    future: textFromFile,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('File not found!');
+                      }
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        case ConnectionState.none:
+                          return Container();
+                        case ConnectionState.done:
+                          return Text(
+                            snapshot.data.toString(),
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          );
+                        default:
+                          return Container();
+                      }
+                    },
+                  ))
             ],
           ),
         ),
