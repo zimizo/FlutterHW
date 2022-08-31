@@ -4,7 +4,7 @@ import 'package:flutter_home_work/module_11/data.dart';
 
 class ListPage extends StatefulWidget {
   static const routeName = '/list';
-  ListPage({Key? key}) : super(key: key);
+  const ListPage({Key? key}) : super(key: key);
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -19,9 +19,7 @@ class _ListPageState extends State<ListPage> {
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
           return SpaseCard(
-            id: data[index]['id'],
-            title: data[index]['title'],
-            image: data[index]['image'],
+            space: data[index],
           );
         },
       ),

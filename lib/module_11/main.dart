@@ -39,12 +39,12 @@ class MyApp extends StatelessWidget {
               });
             case DetailsPage.routeName:
               final args = settings.arguments as Map<String, dynamic>;
-              if (args.containsKey('id')) {
+              if (args.containsKey('space')) {
                 return MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (BuildContext context) {
                     return DetailsPage(
-                      id: args['id'],
+                      space: args['space'],
                     );
                   },
                 );
