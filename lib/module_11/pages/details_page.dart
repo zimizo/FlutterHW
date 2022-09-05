@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_home_work/module_11/utils.dart';
 
 class DetailsPage extends StatelessWidget {
   final Map<String, dynamic> space;

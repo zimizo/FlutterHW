@@ -12,9 +12,7 @@ void main() {
 
     tearDownAll(
       () {
-        if (driver != null) {
-          driver.close();
-        }
+        driver.close();
       },
     );
 
@@ -53,9 +51,7 @@ void main() {
 
     tearDownAll(
       () {
-        if (driver != null) {
-          driver.close();
-        }
+        driver.close();
       },
     );
 
