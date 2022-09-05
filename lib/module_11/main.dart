@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-
-
-
 import 'package:flutter_home_work/module_11/pages/list_page.dart';
 import 'package:flutter_home_work/module_11/pages/details_page.dart';
 import 'package:flutter_home_work/module_11/pages/not_found_page.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: ListPage(),
+        home: const ListPage(),
         // initialRoute: '/hotel_list',
         onUnknownRoute: (RouteSettings settings) {
           return notFoundRoute();
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case ListPage.routeName:
               return MaterialPageRoute(builder: (BuildContext context) {
-                return ListPage();
+                return const ListPage();
               });
             case DetailsPage.routeName:
               final args = settings.arguments as Map<String, dynamic>;
